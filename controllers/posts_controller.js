@@ -28,4 +28,11 @@ router
       .then(post => response.json(post))
   })
 
+  .delete('/posts/:id', (request, response) => {
+    const id = +request.params.id
+
+    Post.query()
+      .deleteById(id)
+  })
+
 module.exports = router

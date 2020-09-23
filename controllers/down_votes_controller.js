@@ -18,4 +18,11 @@ router
       .then(down_vote => response.json(down_vote))
   })
 
+  .delete('/down_votes/:id', (request, responst) => {
+    const id = +request.params.id
+
+    DownVote.query()
+      .deleteById(id)
+  })
+
 module.exports = router
