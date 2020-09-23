@@ -8,15 +8,22 @@ router.get('/users', (request, response) => {
     .then(users => response.json(users))
 })
 
-router.get('/users/:id', (request, response) => {
-  const id = +request.params.id
+router
+  .get('/users/:id', (request, response) => {
+    const id = +request.params.id
 
-  User.query()
-    .where('id', id)
-    .withGraphFetched('posts')
-    .then(user => response.json(user))
-})
+    User.query()
+      .where('id', id)
+      .withGraphFetched('posts')
+      .then(user => response.json(user[0]))
+  })
+  
+  .post('/users', (request, response) => {
+    const { user } = request.body
 
-module.exports = {
-  router: router
-}
+    User.query()
+      .insert(user)
+      .then(user => response.json(user))
+  })
+
+module.exports = router
