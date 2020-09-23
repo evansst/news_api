@@ -1,19 +1,20 @@
-const Post = require('../models/Post');
-const express = require('express');
+const Post = require('../models/Post')
+const express = require('express')
 
-const router = express.Router();
+const router = express.Router()
 
 router
-  .get('/posts', (request, response) => {
+  .get('/posts', (_request, response) => {
     Post.query()
       .then(posts => response.json(posts))
   })
-  
+
   .get('/posts/:id', (request, response) => {
     const id = +request.params.id
     
     Post.query()
       .where('id', id)
+      .withGraphFetched('up_votes')
       .then(post => response.json(post[0]))
   })
 

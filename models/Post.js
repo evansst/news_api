@@ -1,24 +1,25 @@
-const { Model } = require('objection');
-const knex = require('../db/knex');
+const { Model } = require('objection')
+const knex = require('../db/knex')
 
 Model.knex(knex)
-
 class Post extends Model {
   static get tableName() {
-    return 'posts';
+    return 'posts'
   }
 
-  static get realationMappings() {
+  static get relationMappings() {
     const User = require('./User')
+    const UpVote = require('./UpVote')
+
     return {
-      poster: {
-        relation: Model.BelongsToOneRelation,
-        modelClass: User,
+      up_votes: {
+        relation: Model.HasManyRelation,
+        modelClass: UpVote,
         join: {
-          from: 'posts.user_id',
-          to: 'users.id'
+          from: 'posts.id',
+          to: 'up_votes.post_id'
         }
-      }
+      },
     }
   }
 }
