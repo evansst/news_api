@@ -6,6 +6,9 @@ const router = express.Router()
 router
   .get('/posts', (_request, response) => {
     Post.query()
+      .withGraphFetched('user')
+      .withGraphFetched('up_votes')
+      .withGraphFetched('down_votes')
       .then(posts => response.json(posts))
   })
 

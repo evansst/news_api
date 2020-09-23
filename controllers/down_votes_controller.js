@@ -18,7 +18,7 @@ router
       .then(down_vote => response.json(down_vote))
   })
 
-  .delete('/down_votes/:id', (request, responst) => {
+  .delete('/down_votes/:id', (request, response) => {
     const id = +request.params.id
 
     DownVote.query()
