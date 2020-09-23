@@ -9,4 +9,12 @@ router
       .then(up_votes => response.json(up_votes))
   })
 
+  .post('up_votes', (request, response) => {
+    const { up_vote } = request.body
+
+    UpVote.query()
+      .insert(up_vote)
+      .then(up_vote => response.json(up_vote))    
+  })
+
 module.exports = router

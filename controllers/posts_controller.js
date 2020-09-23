@@ -14,7 +14,9 @@ router
     
     Post.query()
       .where('id', id)
+      .withGraphFetched('user')
       .withGraphFetched('up_votes')
+      .withGraphFetched('down_votes')
       .then(post => response.json(post[0]))
   })
 

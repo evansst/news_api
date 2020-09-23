@@ -10,7 +10,8 @@ class User extends Model {
   static get relationMappings() {
     const Post = require('./Post')
     const Favorite = require('./Favorite')
-    const UpVote = require('./UpVote');
+    const UpVote = require('./UpVote')
+    const DownVote = require('./DownVote')
 
     return {
       posts: {
@@ -35,6 +36,14 @@ class User extends Model {
         join: {
           from: 'users.id',
           to: 'up_votes.user_id'
+        }
+      },
+      down_votes: {
+        relation: Model.HasManyRelation,
+        modelClass: DownVote,
+        join: {
+          from: 'users.id',
+          to: 'down_votes.user_id'
         }
       }
     }

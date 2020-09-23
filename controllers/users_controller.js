@@ -17,6 +17,7 @@ router
       .withGraphFetched('posts')
       .withGraphFetched('favorites')
       .withGraphFetched('up_votes')
+      .withGraphFetched('down_votes')
       .then(user => response.json(user[0]))
   })
 
