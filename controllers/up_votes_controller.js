@@ -20,8 +20,17 @@ router
   .delete('/up_votes/:id', (request, response) => {
     const id = +request.params.id
 
-    UpVote.query()
-      .deleteById(id)
+    try {
+      UpVote.query()
+        .deleteById(id)
+        .then(up_vote => {
+          up_vote
+            ? response.json({ message: 'Up vote deleted' })
+            : response.json({ message: "Didn't find a up vote"})
+        })
+    } catch(error) {
+      response.json({ error: error })
+    }
   })
 
 module.exports = router

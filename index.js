@@ -1,5 +1,6 @@
 const express = require('express')
 const cors = require('cors')
+const bcrypt = require('bcrypt')
 
 const usersController = require('./controllers/users_controller')
 const postsController = require('./controllers/posts_controller')

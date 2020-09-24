@@ -21,8 +21,17 @@ router
   .delete('/down_votes/:id', (request, response) => {
     const id = +request.params.id
 
-    DownVote.query()
-      .deleteById(id)
+    try {
+      DownVote.query()
+        .deleteById(id)
+        .then(down_vote => {
+          down_vote
+            ? response.json({ message: 'Down vote deleted' })
+            : response.json({ message: "Didn't find a down vote"})
+        })
+    } catch(error) {
+      response.json({ error: error })
+    }
   })
 
 module.exports = router

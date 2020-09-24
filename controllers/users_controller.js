@@ -1,5 +1,6 @@
 const User = require('../models/User')
 const express = require('express')
+const bcrypt = require('bcrypt')
 
 const router = express.Router()
 
@@ -23,10 +24,33 @@ router
 
   .post('/users', (request, response) => {
     const { user } = request.body
+    
+    bcrypt.hash(user.password, 12, (_error, hashed_password) => {
+      User.query()
+        .insert({
+          username: user.username,
+          email: user.email,
+          password_digest: hashed_password,
+        })
+        .then(user => response.json(user))
+    })
+  })
 
-    User.query()
-      .insert(user)
-      .then(user => response.json(user))
+  .delete('/users/:id', async (request, response) => {
+    const id = +request.params.id
+
+    try {
+      User
+        .query()
+        .deleteById(id)
+        .then(user => {
+          user 
+            ? response.json({ message: "User Deleted" })
+            : response.json({ message: "Item not found" })
+        })
+    } catch(error) {
+      response.json({ error: error })
+    }
   })
 
 module.exports = router

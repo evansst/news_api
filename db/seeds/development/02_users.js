@@ -1,3 +1,7 @@
+const bcrypt = require('bcrypt')
+
+const samsPassword = bcrypt.hashSync('samevans', 12)
+const torisPassword = bcrypt.hashSync('torihall', 12)
 
 exports.seed = function(knex) {
   // Deletes ALL existing entries
@@ -8,11 +12,11 @@ exports.seed = function(knex) {
         {
           username: 'evansst',
           email: 'sevansam@gmail.com',
-          password: 'samevans'
+          password_digest: samsPassword
         },{
           username: 'torihall6',
           email: 'tori@gmail.com',
-          password: 'torihiall'
+          password_digest: torisPassword
         },
       ]);
     });

@@ -1,4 +1,5 @@
 const { Model } = require('objection');
+const { post } = require('../controllers/posts_controller');
 const knex = require('../db/knex');
 
 Model.knex(knex)
@@ -23,11 +24,15 @@ class User extends Model {
         }
       },
       favorites: {
-        relation: Model.HasManyRelation,
-        modelClass: Favorite,
+        relation: Model.ManyToManyRelation,
+        modelClass: Post,
         join: {
           from: 'users.id',
-          to: 'favorites.user_id'
+          through: {
+            from: 'favorites.user_id',
+            to: 'favorites.post_id'
+          },
+          to: 'posts.id'
         }
       }, 
       up_votes: {

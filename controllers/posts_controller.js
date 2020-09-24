@@ -34,8 +34,17 @@ router
   .delete('/posts/:id', (request, response) => {
     const id = +request.params.id
 
-    Post.query()
-      .deleteById(id)
+    try {
+      Post.query()
+        .deleteById(id)
+        .then(post => {
+          post 
+            ? response.json({ message: "Post Deleted" })
+            : response.json({ message: "Item not found"})
+        })
+      } catch(error) {
+        response.json({ error: error })
+      }
   })
 
 module.exports = router

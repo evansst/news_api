@@ -4,7 +4,7 @@ exports.up = function(knex) {
     t.increments('id')
     t.string('username')
     t.string('email')
-    t.string('password')
+    t.string('password_digest')
   })
 };
 
