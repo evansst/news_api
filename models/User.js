@@ -24,15 +24,11 @@ class User extends Model {
         }
       },
       favorites: {
-        relation: Model.ManyToManyRelation,
-        modelClass: Post,
+        relation: Model.HasManyRelation,
+        modelClass: Favorite,
         join: {
           from: 'users.id',
-          through: {
-            from: 'favorites.user_id',
-            to: 'favorites.post_id'
-          },
-          to: 'posts.id'
+          to: 'favorites.user_id'
         }
       }, 
       up_votes: {

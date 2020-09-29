@@ -9,6 +9,7 @@ router
       .withGraphFetched('user')
       .withGraphFetched('up_votes')
       .withGraphFetched('down_votes')
+      .withGraphFetched('favorites')
       .then(posts => response.json(posts))
   })
 
@@ -20,31 +21,33 @@ router
       .withGraphFetched('user')
       .withGraphFetched('up_votes')
       .withGraphFetched('down_votes')
+      .withGraphFetched('favorites')
       .then(post => response.json(post[0]))
   })
 
   .post('/posts', (request, response) => {
     const { post } = request.body
 
+    console.log(post)
+
     Post.query()
       .insert(post)
-      .then(post => response.json(post))
+      .catch(error =>{
+        console.log(error)
+        response.status(500).send(error) 
+      })
+      .then(newPost => response.json(newPost))
   })
 
   .delete('/posts/:id', (request, response) => {
     const id = +request.params.id
-
-    try {
-      Post.query()
-        .deleteById(id)
-        .then(post => {
-          post 
-            ? response.json({ message: "Post Deleted" })
-            : response.json({ message: "Item not found"})
-        })
-      } catch(error) {
-        response.json({ error: error })
-      }
+    Post.query()
+      .deleteById(id)
+      .then(post => {
+        post 
+          ? response.json({ message: "Post Deleted" })
+          : response.json({ message: "Item not found"})
+      })
   })
 
 module.exports = router

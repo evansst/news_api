@@ -1,6 +1,7 @@
 const { Model } = require('objection')
 const knex = require('../db/knex')
 
+
 Model.knex(knex)
 class Post extends Model {
   static get tableName() {
@@ -11,6 +12,7 @@ class Post extends Model {
     const User = require('./User')
     const UpVote = require('./UpVote')
     const DownVote = require('./DownVote')
+    const Favorite = require('./Favorite')
 
     return {
       user: {
@@ -37,6 +39,14 @@ class Post extends Model {
           to: 'down_votes.post_id'
         }
       },
+      favorites: {
+        relation: Model.HasManyRelation,
+        modelClass: Favorite,
+        join: {
+          from: 'posts.id',
+          to: 'favorites.post_id'
+        }
+      }
     }
   }
 }

@@ -12,11 +12,11 @@ exports.seed = function(knex) {
         {
           username: 'evansst',
           email: 'sevansam@gmail.com',
-          password_digest: samsPassword
+          password_digest: samsPassword,
         },{
           username: 'torihall6',
           email: 'tori@gmail.com',
-          password_digest: torisPassword
+          password_digest: torisPassword,
         },
       ]);
     });
