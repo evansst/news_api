@@ -7,44 +7,81 @@ const faker = require('faker')
 const bcrypt = require('bcrypt')
 const Post = require('./models/Post')
 
-async function doSeeds() {
-  for(let i = 1; i < 20; i++) {
-    const randomCard = faker.helpers.contextualCard()
-    const password = faker.internet.password()
-    const hash = bcrypt.hashSync(password, 12)
-    let user = {}
-    let articles = []
+let categories = [
+  'Style',
+  'Travel',
+  'Social',
+  'Politics',
+  'Business',
+  'Science',
+  'Art',
+  'Sports',
+  'Entertainment',
+  'Health',
+  'Technology',
+]
 
-    await newsapi.v2.everything({
-      q: 'fantasy football',
-      language: 'en',
-      page: i
-    }).then(response => articles = response.articles)
+async function doSeeds() {
+  categories = categories.sort(() => Math.random() - 0.5)
+
+  categories.forEach(async (category) => {
+    for(let i = 1; i < 5; i++) {
+      const randomCard = faker.helpers.contextualCard()
+      const password = faker.internet.password()
+      const hash = bcrypt.hashSync(password, 12)
+      let user = {}
+      let articles = []
   
-    await User
-      .query()
-      .insert({
-        username: randomCard.username,
-        email: randomCard.email,
-        password_digest: hash,
+      await newsapi.v2.everything({
+        q: category,
+        language: 'en',
+        contry: 'us',
+        page: i
+      }).then(response => {
+        articles = articles.concat(response.articles)
       })
-      .then(newUser => {
-        user = newUser
-        return user
-      })
-      .then(console.log)
+  
+      await newsapi.v2.topHeadlines({
+        q: category,
+        language: 'en',
+        country: 'us'
+      }).catch(console.log)
+        .then(response => {
+          articles = articles.concat(response.articles)
+        })
     
-    for(let article of articles){
-      await Post
+      await User
         .query()
         .insert({
-          user_id: user.id,
-          url: article.url,
-          title: article.title
-        }).then(console.log)
+          username: randomCard.username,
+          email: randomCard.email,
+          password_digest: hash,
+        })
+        .then(newUser => {
+          user = newUser
+          return user
+        })
+      
+      for(let article of articles){
+        await Post
+          .query()
+          .insert({
+            user_id: user.id,
+            url: article.url,
+            title: article.title,
+            description: article.description,
+            date_published: article.publishedAt,
+            content_type: 'Article',
+            category: categories[i]
+          })
+          .catch(error => error)
+      }
     }
-  }
+    posts = (await Post.query()).length
+    console.log(`Total Posts` + posts)
 
+  })
+  console.log('DONE!')
 }
 
 doSeeds()

@@ -22,13 +22,12 @@ router
       .withGraphFetched('up_votes')
       .withGraphFetched('down_votes')
       .withGraphFetched('favorites')
+      .catch(error => response.status(500).send(error))
       .then(post => response.json(post[0]))
   })
 
   .post('/posts', (request, response) => {
     const { post } = request.body
-
-    console.log(post)
 
     Post.query()
       .insert(post)

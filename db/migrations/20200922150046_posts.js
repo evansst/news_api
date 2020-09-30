@@ -5,6 +5,8 @@ exports.up = function(knex) {
     t.string('url')
     t.string('title')
     t.integer('user_id').references('id').inTable('users')
+    t.string('date_published')
+    t.string('description')
     t.timestamps(true, true)
   })
 };
