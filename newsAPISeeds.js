@@ -24,7 +24,7 @@ let categories = [
 async function doSeeds() {
   categories = categories.sort(() => Math.random() - 0.5)
 
-  categories.forEach(async (category) => {
+  for(const category of categories)  {
     for(let i = 1; i < 5; i++) {
       const randomCard = faker.helpers.contextualCard()
       const password = faker.internet.password()
@@ -72,7 +72,7 @@ async function doSeeds() {
             description: article.description,
             date_published: article.publishedAt,
             content_type: 'Article',
-            category: categories[i]
+            category: category
           })
           .catch(error => error)
       }
@@ -80,7 +80,7 @@ async function doSeeds() {
     posts = (await Post.query()).length
     console.log(`Total Posts` + posts)
 
-  })
+  }
   console.log('DONE!')
 }
 

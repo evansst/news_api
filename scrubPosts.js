@@ -12,7 +12,10 @@ function scrub() {
             Post.query().deleteById(post.id).then(console.log)
           })
           .then(response => {
-            if(response.status !== 200) console.log( `Post: ${post.id} responds with status: ${response.status}`)
+            if(response.status !== 200) {
+              console.log( `Post: ${post.id} responds with status: ${response.status}`)
+              Post.query().deleteById(post.id).then(console.log)
+            }
           })
           .catch(error => {
             console.log(`Post: ${post.id} sounds out some other error!`)

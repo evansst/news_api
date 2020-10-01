@@ -13,6 +13,7 @@ class Post extends Model {
     const UpVote = require('./UpVote')
     const DownVote = require('./DownVote')
     const Favorite = require('./Favorite')
+    const CounterPost = require('./CounterPost')
 
     return {
       user: {
@@ -45,6 +46,14 @@ class Post extends Model {
         join: {
           from: 'posts.id',
           to: 'favorites.post_id'
+        }
+      },
+      counter_post: {
+        relation: Model.HasOneRelation,
+        modelClass: CounterPost,
+        join: {
+          from: 'posts.id',
+          to: 'counter_posts.post_id'
         }
       }
     }

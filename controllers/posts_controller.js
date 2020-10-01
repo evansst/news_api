@@ -10,6 +10,7 @@ router
       .withGraphFetched('up_votes')
       .withGraphFetched('down_votes')
       .withGraphFetched('favorites')
+      .withGraphFetched('counter_post')
       .then(posts => response.json(posts))
   })
 
@@ -22,7 +23,8 @@ router
       .withGraphFetched('up_votes')
       .withGraphFetched('down_votes')
       .withGraphFetched('favorites')
-      .catch(error => response.status(500).send(error))
+      .withGraphFetched('counter_post')
+      // .catch(error => response.status(500).send(error))
       .then(post => response.json(post[0]))
   })
 
